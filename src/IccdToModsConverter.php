@@ -109,10 +109,21 @@ class IccdToModsConverter {
         $titleInfo->appendChild($this->modsDom->createElement('mods:title', $this->resolveTitle()));
         $mods->appendChild($titleInfo);
 
-        // 6. Abstract
-        if ($deso = $this->getVal('//DA/DES/DESO')) {
+        // 6. Abstract (Concatenazione DESO e NSC con veri tag XML <p>)
+        $deso = $this->getVal('//DA/DES/DESO');
+        $nsc  = $this->getVal('//DA/NS/NSC');
+
+        if ($deso || $nsc) {
             $abstract = $this->modsDom->createElement('mods:abstract');
-            $abstract->nodeValue = "<p>$deso</p>"; 
+            
+            if ($deso) {
+                $abstract->appendChild($this->createParagraph($deso));
+            }
+            
+            if ($nsc) {
+                $abstract->appendChild($this->createParagraph($nsc));
+            }
+            
             $mods->appendChild($abstract);
         }
 
@@ -137,6 +148,11 @@ class IccdToModsConverter {
     private function getVal(string $query): string {
         $nodes = $this->xpath->query($query);
         return ($nodes->length > 0) ? trim($nodes->item(0)->nodeValue) : '';
+    }
+
+    private function createParagraph(string $text): \DOMElement {
+        $cleanText = strip_tags($text);
+        return $this->modsDom->createElement('p', $cleanText);
     }
 
     private function generateLogicalId(): string {
