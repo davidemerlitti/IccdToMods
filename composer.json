@@ -1,0 +1,23 @@
+{
+    "name": "informatica-umanistica/iccd-to-mods",
+    "description": "Convertitore da schede ICCD (formato XML/SIGECWeb) a metadati MODS per il profilo ECO-MiC.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Davide Merlitti",
+            "email": "d.merlitti@informaticaumanistica.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "InformaticaUmanistica\\IccdToMods\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=8.0",
+        "ext-dom": "*",
+        "ext-libxml": "*",
+        "ext-zip": "*"
+    }
+}
